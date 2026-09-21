@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小狗汪汪 · 温馨黄色系恋爱养成</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      font-family: 'Segoe UI', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #FFF6D5 0%, #FFE9A8 50%, #FFD966 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .game-container {
+      width: 850px;
+      max-width: 100%;
+      background: #FFFDF2;
+      border-radius: 60px 60px 40px 40px;
+      box-shadow: 0 25px 40px rgba(200, 160, 40, 0.35), inset 0 0 0 2px #FFF9E0, inset 0 0 0 6px #FFE9A8;
+      padding: 24px 28px 34px;
+      transition: all 0.2s;
+      border: 3px solid #FFD966;
+    }
+    .scene-box {
+      background: #FFFBE8;
+      border-radius: 44px 44px 32px 32px;
+      padding: 18px 16px 10px;
+      box-shadow: inset 0 8px 12px rgba(230, 200, 100, 0.25), inset 0 -4px 8px rgba(255, 250, 220, 0.9);
+      border: 2px solid #FFE28A;
+    }
+    .scene-title {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #B8860B;
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 0 #FFF6D5, 0 0 12px #FFE9A8;
+    }
+    .illustration {
+      background: #FFF3C4;
+      border-radius: 36px;
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 3px #FFFDF2, 0 10px 16px #E6C86E;
+      margin-bottom: 16px;
+      border: 2px solid #FFE28A;
+    }
+    .character-sprite {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 240px;
+      transition: all 0.3s ease;
+    }
+    .svg-illustration {
+      width: 100%;
+      max-width: 360px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+      filter: drop-shadow(0 8px 6px rgba(200, 150, 40, 0.25));
+    }
+    .message-box {
+      background: #FFF6D5;
+      padding: 16px 22px;
+      border-radius: 40px;
+      font-size: 1.15rem;
+      color: #7A5A1E;
+      text-align: center;
+      box-shadow: inset 0 2px 10px #FFE9A8, 0 6px 0 #E6C86E;
+      border: 2px solid #FFE28A;
+      min-height: 85px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0 22px;
+      font-weight: 600;
+      line-height: 1.5;
+      letter-spacing: 0.3px;
+    }
+    .stats {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      background: #FFECB3;
+      padding: 8px 26px;
+      border-radius: 60px;
+      color: #7A5A1E;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: inset 0 -2px 0 #E6C86E, 0 4px 0 #C9A63B;
+      border: 2px solid #FFF6D5;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stat span {
+      font-size: 1.5rem;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .btn {
+      background: #FFE28A;
+      border: none;
+      border-radius: 60px;
+      padding: 14px 26px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #6B4E0A;
+      box-shadow: 0 7px 0 #C9A63B, 0 4px 10px rgba(200, 160, 40, 0.4);
+      cursor: pointer;
+      transition: all 0.08s linear;
+      border: 2px solid #FFFDF2;
+      letter-spacing: 1px;
+      flex: 1 0 150px;
+      text-shadow: 0 1px 0 #FFF6D5;
+    }
+    .btn:active {
+      transform: translateY(5px);
+      box-shadow: 0 2px 0 #C9A63B;
+    }
+    .btn:disabled {
+      opacity: 0.45;
+      transform: translateY(4px);
+      box-shadow: 0 3px 0 #A88B32;
+      pointer-events: none;
+      filter: grayscale(0.4);
+    }
+    .btn-love {
+      background: #FFD966;
+      box-shadow: 0 7px 0 #C9A63B, 0 4px 10px rgba(200, 160, 40, 0.45);
+      color: #6B3E0A;
+    }
+    .btn-love:active {
+      box-shadow: 0 2px 0 #C9A63B;
+    }
+    .btn-special {
+      background: #FFC857;
+      box-shadow: 0 7px 0 #B8860B, 0 4px 10px rgba(180, 130, 20, 0.4);
+      color: #4A3200;
+    }
+    .btn-special:active {
+      box-shadow: 0 2px 0 #B8860B;
+    }
+    .reset-btn {
+      background: #FFF0B5;
+      box-shadow: 0 5px 0 #D4B45A;
+      color: #7A5A1E;
+      font-size: 0.9rem;
+      padding: 10px 18px;
+      flex: 0.4 1 80px;
+      margin-left: auto;
+    }
+    .footer {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      gap: 10px;
+    }
+    .tiny-note {
+      font-size: 0.7rem;
+      color: #C9A63B;
+      margin-left: 6px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+<div class="game-container" id="gameContainer">
+  <div class="scene-box">
+    <div class="scene-title" id="sceneTitle">🐶 小狗汪汪 · 温暖的小家</div>
+    <div class="illustration" id="illustration">
+      <div class="character-sprite" id="characterSprite">
+        <!-- SVG 动态渲染位置 -->
+      </div>
+    </div>
+    <div class="message-box" id="messageBox">汪！今天想和我一起玩吗？💛</div>
+
+    <!-- 状态条 -->
+    <div class="stats" id="statsPanel">
+      <div class="stat"><span>❤️</span> 好感 <span id="affectionValue">0</span></div>
+      <div class="stat"><span>🍖</span> 饱食 <span id="hungerValue">50</span></div>
+      <div class="stat"><span>🧼</span> 清洁 <span id="cleanValue">50</span></div>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="actions" id="actionPanel">
+      <!-- 动态按钮 -->
+    </div>
+    <div class="footer">
+      <button class="btn reset-btn" id="resetBtn">🔄 重新开始</button>
+      <div class="tiny-note">🐕 → 👦 → 💛 从狗狗到恋人</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- 游戏状态管理 ---
+  const state = {
+    phase: 'puppy',
+    affection: 0,
+    hunger: 50,
+    clean: 50,
+    transformed: false,
+    kissUnlocked: false,
+  };
+
+  let isTransforming = false;
+
+  // --- 获取DOM元素 ---
+  const sceneTitle = document.getElementById('sceneTitle');
+  const characterSprite = document.getElementById('characterSprite');
+  const messageBox = document.getElementById('messageBox');
+  const affectionValue = document.getElementById('affectionValue');
+  const hungerValue = document.getElementById('hungerValue');
+  const cleanValue = document.getElementById('cleanValue');
+  const actionPanel = document.getElementById('actionPanel');
+  const resetBtn = document.getElementById('resetBtn');
+
+  const clamp = (num, min = 0, max = 100) => Math.min(max, Math.max(min, num));
+
+  function updateStatsUI() {
+    affectionValue.textContent = Math.floor(state.affection);
+    hungerValue.textContent = Math.floor(state.hunger);
+    cleanValue.textContent = Math.floor(state.clean);
+  }
+
+  function checkTransformation() {
+    if (state.phase === 'puppy' && !state.transformed &&
+        state.affection >= 70 && state.hunger >= 60 && state.clean >= 60 &&
+        !isTransforming) {
+      transformToHuman();
+      return true;
+    }
+    return false;
+  }
+
+  function transformToHuman() {
+    if (isTransforming) return;
+    isTransforming = true;
+    state.phase = 'human';
+    state.transformed = true;
+    state.affection = Math.min(100, state.affection + 10);
+    sceneTitle.textContent = '🌟 他变成了人 · 恋爱开始';
+    messageBox.textContent = '我……变成人类了？因为我太喜欢你了……想用人类的身份继续陪在你身边。💛';
+    updateStatsUI();
+    renderScene();
+    isTransforming = false;
+  }
+
+  // --- 狗狗阶段动作 ---
+  function feed() {
+    if (state.phase !== 'puppy') return;
+    state.hunger = clamp(state.hunger + 18);
+    state.affection = clamp(state.affection + 5);
+    messageBox.textContent = '小金毛开心地吃着狗粮，尾巴摇成螺旋桨～ 饱食+18 好感+5 🍖';
+    updateStatsUI();
+    checkTransformation();
+    renderScene();
+  }
+
+  function bath() {
+    if (state.phase !== 'puppy') return;
+    state.clean = clamp(state.clean + 22);
+    state.affection = clamp(state.affection + 6);
+    state.hunger = clamp(state.hunger - 5);
+    messageBox.textContent = '洗香香！小金毛甩着水珠，变得干净又蓬松。清洁+22 好感+6 🧼';
+    updateStatsUI();
+    checkTransformation();
+    renderScene();
+  }
+
+  function play() {
+    if (state.phase !== 'puppy') return;
+    state.affection = clamp(state.affection + 10);
+    state.hunger = clamp(state.hunger - 8);
+    state.clean = clamp(state.clean - 12);
+    messageBox.textContent = '你扔出小球，小金毛飞奔捡回来！好感+10 饱食-8 清洁-12 🎾';
+    updateStatsUI();
+    checkTransformation();
+    renderScene();
+  }
+
+  function pet() {
+    if (state.phase !== 'puppy') return;
+    state.affection = clamp(state.affection + 8);
+    messageBox.textContent = '你轻轻抚摸小金毛，它舒服地眯起眼睛。好感+8 🤚';
+    updateStatsUI();
+    checkTransformation();
+    renderScene();
+  }
+
+  // --- 人类阶段恋爱互动 ---
+  function kiss() {
+    if (state.phase !== 'human') return;
+    if (state.affection >= 85) {
+      state.affection = clamp(state.affection + 6);
+      messageBox.textContent = '💋 他红着脸，轻轻吻了你。心跳加速…… “我会一直一直喜欢你。” 好感+6';
+    } else {
+      state.affection = clamp(state.affection + 8);
+      messageBox.textContent = '💋 你主动亲吻了他！他惊讶地睁大眼睛，随后温柔地抱住你。好感+8';
+    }
+    updateStatsUI();
+    renderScene();
+  }
+
+  function hug() {
+    if (state.phase !== 'human') return;
+    state.affection = clamp(state.affection + 5);
+    messageBox.textContent = '你拥抱了他，他耳朵尖微微发红，手臂却收得更紧。好感+5 🤗';
+    updateStatsUI();
+    renderScene();
+  }
+
+  function patHead() {
+    if (state.phase !== 'human') return;
+    state.affection = clamp(state.affection + 4);
+    messageBox.textContent = '你揉了揉他的头发，他像以前当小狗时那样蹭了蹭你的手心。好感+4 ✨';
+    updateStatsUI();
+    renderScene();
+  }
+
+  function changeHabit() {
+    if (state.phase !== 'human') return;
+    if (state.affection >= 60) {
+      state.affection = clamp(state.affection + 7);
+      messageBox.textContent = '你教他改掉狗狗的习惯，他反而调皮地轻咬你指尖：“汪…还是忍不住想黏着你。” 好感+7 🐕';
+    } else {
+      messageBox.textContent = '他还有点害羞，不太愿意改变狗狗习性…… 再多培养感情吧。💛';
+    }
+    updateStatsUI();
+    renderScene();
+  }
+
+  function resetGame() {
+    state.phase = 'puppy';
+    state.affection = 0;
+    state.hunger = 50;
+    state.clean = 50;
+    state.transformed = false;
+    state.kissUnlocked = false;
+    isTransforming = false;
+    sceneTitle.textContent = '🐶 小狗汪汪 · 温暖的小家';
+    messageBox.textContent = '汪！今天想和我一起玩吗？💛';
+    updateStatsUI();
+    renderScene();
+  }
+
+  function renderButtons() {
+    actionPanel.innerHTML = '';
+    if (state.phase === 'puppy') {
+      const buttons = [
+        { text: '🍖 喂食', action: feed, class: '' },
+        { text: '🧼 洗澡', action: bath, class: '' },
+        { text: '🎾 玩耍', action: play, class: '' },
+        { text: '🤚 抚摸', action: pet, class: '' }
+      ];
+      buttons.forEach(btn => {
+        const b = document.createElement('button');
+        b.className = `btn ${btn.class}`;
+        b.textContent = btn.text;
+        b.addEventListener('click', btn.action);
+        actionPanel.appendChild(b);
+      });
+    } else {
+      const buttons = [
+        { text: '💋 亲吻', action: kiss, class: 'btn-love' },
+        { text: '🤗 拥抱', action: hug, class: '' },
+        { text: '✨ 摸头', action: patHead, class: '' },
+        { text: '🐕 改掉狗狗习性', action: changeHabit, class: 'btn-special' }
+      ];
+      buttons.forEach(btn => {
+        const b = document.createElement('button');
+        b.className = `btn ${btn.class}`;
+        b.textContent = btn.text;
+        b.addEventListener('click', btn.action);
+        actionPanel.appendChild(b);
+      });
+    }
+  }
+
+  function renderCharacter() {
+    if (state.phase === 'puppy') {
+      characterSprite.innerHTML = `
+        <svg class="svg-illustration" viewBox="0 0 300 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="150" cy="190" rx="70" ry="55" fill="#F5D98A" stroke="#C9A63B" stroke-width="3"/>
+          <ellipse cx="150" cy="210" rx="45" ry="30" fill="#FFF3C4" stroke="#C9A63B" stroke-width="2"/>
+          <circle cx="150" cy="110" r="58" fill="#F5D98A" stroke="#C9A63B" stroke-width="3"/>
+          <ellipse cx="100" cy="82" rx="20" ry="32" fill="#E6C86E" stroke="#C9A63B" stroke-width="3" transform="rotate(-15 100 82)"/>
+          <ellipse cx="200" cy="82" rx="20" ry="32" fill="#E6C86E" stroke="#C9A63B" stroke-width="3" transform="rotate(15 200 82)"/>
+          <circle cx="130" cy="105" r="8" fill="#5A3E0A"/>
+          <circle cx="170" cy="105" r="8" fill="#5A3E0A"/>
+          <circle cx="127" cy="102" r="3" fill="white"/>
+          <circle cx="167" cy="102" r="3" fill="white"/>
+          <ellipse cx="150" cy="125" rx="12" ry="9" fill="#6B4E0A"/>
+          <ellipse cx="147" cy="122" rx="3" ry="2" fill="#C9A63B"/>
+          <path d="M140 138 Q150 150 160 138" stroke="#6B4E0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <ellipse cx="150" cy="148" rx="6" ry="8" fill="#FFB7C5"/>
+          <path d="M220 180 Q250 150 240 120" stroke="#E6C86E" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <ellipse cx="115" cy="225" rx="17" ry="12" fill="#E6C86E" stroke="#C9A63B" stroke-width="2"/>
+          <ellipse cx="185" cy="225" rx="17" ry="12" fill="#E6C86E" stroke="#C9A63B" stroke-width="2"/>
+          <path d="M250 50 Q260 35 270 50 Q260 65 250 50" fill="#FFD966" opacity="0.9"/>
+        </svg>
+      `;
+    } else {
+      characterSprite.innerHTML = `
+        <svg class="svg-illustration" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="105" y="160" width="90" height="85" rx="30" fill="#FFE28A" stroke="#C9A63B" stroke-width="3"/>
+          <rect x="135" y="135" width="30" height="30" fill="#FFF3C4" stroke="#C9A63B" stroke-width="2"/>
+          <circle cx="150" cy="100" r="55" fill="#FFF3C4" stroke="#C9A63B" stroke-width="3"/>
+          <path d="M100 80 Q150 20 200 80 Q210 110 200 130 Q180 100 150 100 Q120 100 100 130 Q90 110 100 80" fill="#F5D98A" stroke="#C9A63B" stroke-width="3"/>
+          <ellipse cx="105" cy="70" rx="20" ry="30" fill="#E6C86E" stroke="#C9A63B" stroke-width="3" transform="rotate(-25 105 70)"/>
+          <ellipse cx="195" cy="70" rx="20" ry="30" fill="#E6C86E" stroke="#C9A63B" stroke-width="3" transform="rotate(25 195 70)"/>
+          <ellipse cx="125" cy="100" rx="9" ry="12" fill="#5A3E0A"/>
+          <ellipse cx="175" cy="100" rx="9" ry="12" fill="#5A3E0A"/>
+          <circle cx="122" cy="95" r="4" fill="white"/>
+          <circle cx="172" cy="95" r="4" fill="white"/>
+          <ellipse cx="105" cy="120" rx="12" ry="6" fill="#FFB7C5" opacity="0.6"/>
+          <ellipse cx="195" cy="120" rx="12" ry="6" fill="#FFB7C5" opacity="0.6"/>
+          <path d="M138 120 Q150 135 162 120" stroke="#6B4E0A" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <ellipse cx="95" cy="195" rx="16" ry="28" fill="#FFF3C4" stroke="#C9A63B" stroke-width="3" transform="rotate(20 95 195)"/>
+          <ellipse cx="205" cy="195" rx="16" ry="28" fill="#FFF3C4" stroke="#C9A63B" stroke-width="3" transform="rotate(-20 205 195)"/>
+          <rect x="125" y="155" width="50" height="12" rx="6" fill="#D4A017" stroke="#B8860B" stroke-width="2"/>
+          <circle cx="150" cy="161" r="6" fill="#FFD966" stroke="#B8860B" stroke-width="2"/>
+          <path d="M240 70 Q250 55 260 70 Q250 85 240 70" fill="#FFD966"/>
+          <path d="M40 90 Q50 75 60 90 Q50 105 40 90" fill="#FFD966" opacity="0.8"/>
+        </svg>
+      `;
+    }
+  }
+
+  function renderScene() {
+    if (state.phase === 'puppy') {
+      if (state.transformed === false) {
+        sceneTitle.textContent = '🐶 小狗汪汪 · 温暖的小家';
+      }
+    } else {
+      sceneTitle.textContent = '🌟 他变成了人 · 恋爱开始';
+    }
+    renderCharacter();
+    renderButtons();
+    updateStatsUI();
+  }
+
+  resetBtn.addEventListener('click', resetGame);
+
+  function initGame() {
+    resetGame();
+  }
+
+  initGame();
+
+  window.addEventListener('load', () => {
+    resetGame();
+  });
+</script>
+</body>
+        </html>
