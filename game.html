@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小金毛 · 变成人恋爱</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      font-family: 'Segoe UI', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #fce9d8 0%, #f8d5b0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .game-container {
+      width: 850px;
+      max-width: 100%;
+      background: #fff6ed;
+      border-radius: 60px 60px 40px 40px;
+      box-shadow: 0 25px 40px rgba(160, 100, 60, 0.25), inset 0 0 0 2px #fff9f0, inset 0 0 0 6px #fde6d2;
+      padding: 24px 28px 34px;
+      transition: all 0.2s;
+    }
+    .scene-box {
+      background: #fef9f2;
+      border-radius: 44px 44px 32px 32px;
+      padding: 18px 16px 10px;
+      box-shadow: inset 0 8px 12px rgba(220, 180, 140, 0.2), inset 0 -4px 8px rgba(255, 245, 230, 0.8);
+      border: 2px solid #f7dbbc;
+    }
+    .scene-title {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #a5673f;
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 0 #fff0e0;
+    }
+    .illustration {
+      background: #f3dfcb;
+      border-radius: 36px;
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 3px #fffcf7, 0 10px 16px #dbbd9b;
+      margin-bottom: 16px;
+    }
+    .character-sprite {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 240px;
+      transition: all 0.3s ease;
+    }
+    .sprite {
+      max-width: 100%;
+      height: 200px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 6px rgba(120, 70, 30, 0.2));
+      transition: transform 0.3s;
+    }
+    .sprite:hover {
+      transform: scale(1.02);
+    }
+    /* 用SVG绘制小狗和小男孩，保证清晰可爱 */
+    .svg-illustration {
+      width: 100%;
+      max-width: 360px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    .message-box {
+      background: #fff2e4;
+      padding: 16px 22px;
+      border-radius: 40px;
+      font-size: 1.2rem;
+      color: #583c2b;
+      text-align: center;
+      box-shadow: inset 0 2px 10px #ffe3cd, 0 6px 0 #dbaa7a;
+      border: 2px solid #ffdbbd;
+      min-height: 85px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0 22px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0.3px;
+    }
+    .stats {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      background: #f3e2d2;
+      padding: 8px 26px;
+      border-radius: 60px;
+      color: #6b4a33;
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: inset 0 -2px 0 #dbbd9b, 0 4px 0 #b58a64;
+      border: 2px solid #ffece0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stat span {
+      font-size: 1.5rem;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .btn {
+      background: #ffdab9;
+      border: none;
+      border-radius: 60px;
+      padding: 14px 26px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #553322;
+      box-shadow: 0 7px 0 #b68454, 0 4px 10px rgba(150, 90, 40, 0.3);
+      cursor: pointer;
+      transition: all 0.08s linear;
+      border: 2px solid #fff6eb;
+      letter-spacing: 1px;
+      flex: 1 0 150px;
+      text-shadow: 0 1px 0 #fff0dd;
+    }
+    .btn:active {
+      transform: translateY(5px);
+      box-shadow: 0 2px 0 #b68454;
+    }
+    .btn:disabled {
+      opacity: 0.45;
+      transform: translateY(4px);
+      box-shadow: 0 3px 0 #9b7a5a;
+      pointer-events: none;
+      filter: grayscale(0.4);
+    }
+    .btn-love {
+      background: #ffb7c5;
+      box-shadow: 0 7px 0 #b95d72, 0 4px 10px rgba(180, 80, 100, 0.3);
+      color: #4b1f2b;
+    }
+    .btn-love:active {
+      box-shadow: 0 2px 0 #b95d72;
+    }
+    .btn-special {
+      background: #b5d9ff;
+      box-shadow: 0 7px 0 #6183b3;
+      color: #1e3149;
+    }
+    .btn-special:active {
+      box-shadow: 0 2px 0 #6183b3;
+    }
+    .reset-btn {
+      background: #e6d9cb;
+      box-shadow: 0 5px 0 #a58d77;
+      color: #4d3625;
+      font-size: 0.9rem;
+      padding: 10px 18px;
+      flex: 0.4 1 80px;
+      margin-left: auto;
+    }
+    .footer {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      gap: 10px;
+    }
+    .tiny-note {
+      font-size: 0.7rem;
+      color: #b38f73;
+      margin-left: 6px;
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+<div class="game-container" id="gameContainer">
+  <div class="scene-box">
+    <div class="scene-title" id="sceneTitle">🏡 温暖的小家</div>
+    <div class="illustration" id="illustration">
+      <div class="character-sprite" id="characterSprite">
+        <!-- SVG 动态渲染位置 -->
+      </div>
+    </div>
+    <div class="message-box" id="messageBox">汪！今天想和我一起玩吗？</div>
+
+    <!-- 状态条 -->
+    <div class="stats" id="statsPanel">
+      <div class="stat"><span>❤️</span> 好感 <span id="affectionValue">0</span></div>
+      <div class="stat"><span>🍖</span> 饱食 <span id="hungerValue">50</span></div>
+      <div class="stat"><span>🧼</span> 清洁 <span id="cleanValue">50</span></div>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="actions" id="actionPanel">
+      <!-- 动态按钮 -->
+    </div>
+    <div class="footer">
+      <button class="btn reset-btn" id="resetBtn">🔄 重新开始</button>
+      <div class="tiny-note">从狗狗到恋人…</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- 游戏状态管理 ---
+  const state = {
+    // 阶段: 'puppy' 狗狗阶段, 'human' 人类阶段(恋爱)
+    phase: 'puppy',
+    // 属性
+    affection: 0,       // 0-100
+    hunger: 50,        // 0-100 (越高越饱)
+    clean: 50,         // 0-100 (越高越干净)
+    // 是否已经变成人(通过特殊事件)
+    transformed: false,
+    // 是否已经触发过第一次接吻选项
+    kissUnlocked: false,
+    // 临时标记避免重复触发转变 (但会通过按钮触发)
+  };
+
+  // 防止快速点击导致多次转变
+  let isTransforming = false;
+
+  // --- 获取DOM元素 ---
+  const sceneTitle = document.getElementById('sceneTitle');
+  const characterSprite = document.getElementById('characterSprite');
+  const messageBox = document.getElementById('messageBox');
+  const affectionValue = document.getElementById('affectionValue');
+  const hungerValue = document.getElementById('hungerValue');
+  const cleanValue = document.getElementById('cleanValue');
+  const actionPanel = document.getElementById('actionPanel');
+  const resetBtn = document.getElementById('resetBtn');
+  const statsPanel = document.getElementById('statsPanel');
+
+  // --- 工具函数: 限制数值范围 0-100 ---
+  const clamp = (num, min = 0, max = 100) => Math.min(max, Math.max(min, num));
+
+  // --- 更新UI数值显示 ---
+  function updateStatsUI() {
+    affectionValue.textContent = Math.floor(state.affection);
+    hungerValue.textContent = Math.floor(state.hunger);
+    cleanValue.textContent = Math.floor(state.clean);
+  }
+
+  // --- 判断是否达到变成人的条件 (好感>=70, 饱食>=60, 清洁>=60) 并且还未变身 ---
+  function checkTransformation() {
+    if (state.phase === 'puppy' && !state.transformed &&
+        state.affection >= 70 && state.hunger >= 60 && state.clean >= 60 &&
+        !isTransforming) {
+      // 触发变身!
+      transformToHuman();
+      return true;
+    }
+    return false;
+  }
+
+  // --- 变身成为人类!!! ---
+  function transformToHuman() {
+    if (isTransforming) return;
+    isTransforming = true;
+    state.phase = 'human';
+    state.transformed = true;
+    state.affection = Math.min(100, state.affection + 10); // 变身奖励
+    // 重置场景标题
+    sceneTitle.textContent = '🌟 他变成了人 · 恋爱开始';
+    // 显示信息
+    messageBox.textContent = '我……变成人类了？因为我太喜欢你了……想用人类的身份继续陪在你身边。❤️';
+    // 稍微调整数值
+    updateStatsUI();
+    // 渲染 (会渲染人类sprite)
+    renderScene();
+    // 解锁特殊按钮 (恋爱选项)
+    isTransforming = false;
+  }
+
+  // --- 处理狗狗阶段动作: 喂食, 洗澡, 玩耍, 抚摸 ---
+  function feed() {
+    if (state.phase !== 'puppy') return;
+    state.hunger = clamp(state.hunger + 18);
+    state.affection = clamp(state.affection + 5);
+    messageBox.textContent = '小金毛开心地吃着狗粮，尾巴摇成螺旋桨～ 饱食+18 好感+5';
+    updateStatsUI();
+    checkTransformation();
+    renderScene();
+  }
+
+  function bath() {
+    if (state.phase !== 'puppy') return;
+    state.clean = clamp(state.clean + 22);
+    state.affection = clamp(state.affection + 6);
+    state.hunger = clamp(state.hunger - 5); // 洗澡消耗一点体力
+    messageBox.textContent = '洗香香！小金毛甩着水珠，变得干净又蓬松。清洁+22 好感+6';
+    updateStatsUI();
+    checkTransformation();
+    renderScene();
+  }
+
+  function play() {
+    if (state.phase !== 'puppy') return;
+    state.affection = clamp(state.affection + 10);
+    state.hunger = clamp(state.hunger - 8);
+    state.clean = clamp(state.clean - 12);
+    messageBox.textContent = '你扔出小球，小金毛飞奔捡回来！好感+10 饱食-8 清洁-12';
+    updateStatsUI();
+    checkTransformation();
+    renderScene();
+  }
+
+  function pet() {
+    if (state.phase !== 'puppy') return;
+    state.affection = clamp(state.affection + 8);
+    messageBox.textContent = '你轻轻抚摸小金毛，它舒服地眯起眼睛。好感+8';
+    updateStatsUI();
+    checkTransformation();
+    renderScene();
+  }
+
+  // --- 人类阶段的恋爱互动 ---
+  function kiss() {
+    if (state.phase !== 'human') return;
+    if (state.affection >= 85) {
+      state.affection = clamp(state.affection + 6);
+      messageBox.textContent = '💋 他红着脸，轻轻吻了你。心跳加速…… “我会一直一直喜欢你。” 好感+6';
+    } else {
+      state.affection = clamp(state.affection + 8);
+      messageBox.textContent = '💋 你主动亲吻了他！他惊讶地睁大眼睛，随后温柔地抱住你。好感+8';
+    }
+    updateStatsUI();
+    renderScene();
+  }
+
+  function hug() {
+    if (state.phase !== 'human') return;
+    state.affection = clamp(state.affection + 5);
+    messageBox.textContent = '你拥抱了他，他耳朵尖微微发红，手臂却收得更紧。好感+5';
+    updateStatsUI();
+    renderScene();
+  }
+
+  function patHead() {
+    if (state.phase !== 'human') return;
+    state.affection = clamp(state.affection + 4);
+    messageBox.textContent = '你揉了揉他的头发，他像以前当小狗时那样蹭了蹭你的手心。好感+4';
+    updateStatsUI();
+    renderScene();
+  }
+
+  // 改变狗狗习性：比如让他像狗狗一样舔你？或者学会亲吻？
+  function changeHabit() {
+    if (state.phase !== 'human') return;
+    if (state.affection >= 60) {
+      state.affection = clamp(state.affection + 7);
+      messageBox.textContent = '你教他改掉狗狗的习惯，他反而调皮地轻咬你指尖：“汪…还是忍不住想黏着你。” 好感+7';
+    } else {
+      messageBox.textContent = '他还有点害羞，不太愿意改变狗狗习性…… 再多培养感情吧。';
+    }
+    updateStatsUI();
+    renderScene();
+  }
+
+  // --- 重置游戏 ---
+  function resetGame() {
+    state.phase = 'puppy';
+    state.affection = 0;
+    state.hunger = 50;
+    state.clean = 50;
+    state.transformed = false;
+    state.kissUnlocked = false;
+    isTransforming = false;
+    sceneTitle.textContent = '🏡 温暖的小家';
+    messageBox.textContent = '汪！今天想和我一起玩吗？';
+    updateStatsUI();
+    renderScene();
+  }
+
+  // --- 根据阶段渲染动作按钮 ---
+  function renderButtons() {
+    actionPanel.innerHTML = '';
+    if (state.phase === 'puppy') {
+      const buttons = [
+        { text: '🍖 喂食', action: feed, class: '' },
+        { text: '🧼 洗澡', action: bath, class: '' },
+        { text: '🎾 玩耍', action: play, class: '' },
+        { text: '🤚 抚摸', action: pet, class: '' }
+      ];
+      buttons.forEach(btn => {
+        const b = document.createElement('button');
+        b.className = `btn ${btn.class}`;
+        b.textContent = btn.text;
+        b.addEventListener('click', btn.action);
+        actionPanel.appendChild(b);
+      });
+    } else {
+      // 人类阶段
+      const buttons = [
+        { text: '💋 亲吻', action: kiss, class: 'btn-love' },
+        { text: '🤗 拥抱', action: hug, class: '' },
+        { text: '✨ 摸头', action: patHead, class: '' },
+        { text: '🐕 改掉狗狗习性', action: changeHabit, class: 'btn-special' }
+      ];
+      buttons.forEach(btn => {
+        const b = document.createElement('button');
+        b.className = `btn ${btn.class}`;
+        b.textContent = btn.text;
+        b.addEventListener('click', btn.action);
+        actionPanel.appendChild(b);
+      });
+    }
+  }
+
+  // --- 绘制角色SVG (小狗或男孩) ---
+  function renderCharacter() {
+    if (state.phase === 'puppy') {
+      // 小金毛狗狗 SVG
+      characterSprite.innerHTML = `
+        <svg class="svg-illustration" viewBox="0 0 300 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 身体 -->
+          <ellipse cx="150" cy="190" rx="70" ry="55" fill="#E6B87E" stroke="#B47D4A" stroke-width="3"/>
+          <!-- 肚子 -->
+          <ellipse cx="150" cy="210" rx="45" ry="30" fill="#F5DEB3" stroke="#B47D4A" stroke-width="2"/>
+          <!-- 头 -->
+          <circle cx="150" cy="110" r="58" fill="#E6B87E" stroke="#B47D4A" stroke-width="3"/>
+          <!-- 耳朵 -->
+          <ellipse cx="100" cy="82" rx="20" ry="32" fill="#CF9F63" stroke="#B47D4A" stroke-width="3" transform="rotate(-15 100 82)"/>
+          <ellipse cx="200" cy="82" rx="20" ry="32" fill="#CF9F63" stroke="#B47D4A" stroke-width="3" transform="rotate(15 200 82)"/>
+          <!-- 眼睛 -->
+          <circle cx="130" cy="105" r="8" fill="#2F1B0E"/>
+          <circle cx="170" cy="105" r="8" fill="#2F1B0E"/>
+          <circle cx="127" cy="102" r="3" fill="white"/>
+          <circle cx="167" cy="102" r="3" fill="white"/>
+          <!-- 鼻子 -->
+          <ellipse cx="150" cy="125" rx="12" ry="9" fill="#3D2B1A"/>
+          <ellipse cx="147" cy="122" rx="3" ry="2" fill="#A67C52"/>
+          <!-- 嘴 -->
+          <path d="M140 138 Q150 150 160 138" stroke="#3D2B1A" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- 舌头 -->
+          <ellipse cx="150" cy="148" rx="6" ry="8" fill="#F4A6A6"/>
+          <!-- 尾巴 -->
+          <path d="M220 180 Q250 150 240 120" stroke="#CF9F63" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <!-- 前爪 -->
+          <ellipse cx="115" cy="225" rx="17" ry="12" fill="#CF9F63" stroke="#B47D4A" stroke-width="2"/>
+          <ellipse cx="185" cy="225" rx="17" ry="12" fill="#CF9F63" stroke="#B47D4A" stroke-width="2"/>
+          <!-- 小爱心 -->
+          <path d="M250 50 Q260 35 270 50 Q260 65 250 50" fill="#FFB7C5" opacity="0.8"/>
+        </svg>
+      `;
+    } else {
+      // 变成人的男孩 (小金毛特征: 金发、狗狗耳朵、温柔的眼睛)
+      characterSprite.innerHTML = `
+        <svg class="svg-illustration" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 身体 / 衣服 -->
+          <rect x="105" y="160" width="90" height="85" rx="30" fill="#9CC0E7" stroke="#4A6B8A" stroke-width="3"/>
+          <!-- 脖子 -->
+          <rect x="135" y="135" width="30" height="30" fill="#FDE1C6" stroke="#B47D4A" stroke-width="2"/>
+          <!-- 头部 -->
+          <circle cx="150" cy="100" r="55" fill="#FDE1C6" stroke="#B47D4A" stroke-width="3"/>
+          <!-- 金发 -->
+          <path d="M100 80 Q150 20 200 80 Q210 110 200 130 Q180 100 150 100 Q120 100 100 130 Q90 110 100 80" fill="#E6B87E" stroke="#B47D4A" stroke-width="3"/>
+          <!-- 狗狗耳朵(保留小金毛特征) -->
+          <ellipse cx="105" cy="70" rx="20" ry="30" fill="#CF9F63" stroke="#B47D4A" stroke-width="3" transform="rotate(-25 105 70)"/>
+          <ellipse cx="195" cy="70" rx="20" ry="30" fill="#CF9F63" stroke="#B47D4A" stroke-width="3" transform="rotate(25 195 70)"/>
+          <!-- 眼睛 -->
+          <ellipse cx="125" cy="100" rx="9" ry="12" fill="#2F1B0E"/>
+          <ellipse cx="175" cy="100" rx="9" ry="12" fill="#2F1B0E"/>
+          <circle cx="122" cy="95" r="4" fill="white"/>
+          <circle cx="172" cy="95" r="4" fill="white"/>
+          <!-- 腮红 -->
+          <ellipse cx="105" cy="120" rx="12" ry="6" fill="#FFB7C5" opacity="0.5"/>
+          <ellipse cx="195" cy="120" rx="12" ry="6" fill="#FFB7C5" opacity="0.5"/>
+          <!-- 嘴巴 (微笑) -->
+          <path d="M138 120 Q150 135 162 120" stroke="#4A2E1E" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- 手臂 (前爪变的手，但保留一点狗狗感) -->
+          <ellipse cx="95" cy="195" rx="16" ry="28" fill="#FDE1C6" stroke="#B47D4A" stroke-width="3" transform="rotate(20 95 195)"/>
+          <ellipse cx="205" cy="195" rx="16" ry="28" fill="#FDE1C6" stroke="#B47D4A" stroke-width="3" transform="rotate(-20 205 195)"/>
+          <!-- 尾巴？不画了，给他一个项圈 -->
+          <rect x="125" y="155" width="50" height="12" rx="6" fill="#D2691E" stroke="#8B4513" stroke-width="2"/>
+          <circle cx="150" cy="161" r="6" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+          <!-- 爱心 -->
+          <path d="M240 70 Q250 55 260 70 Q250 85 240 70" fill="#FFB7C5"/>
+          <path d="M40 90 Q50 75 60 90 Q50 105 40 90" fill="#FFB7C5" opacity="0.7"/>
+        </svg>
+      `;
+    }
+  }
+
+  // --- 渲染场景: 标题, 角色, 按钮, 消息更新已经在各处调用 ---
+  function renderScene() {
+    // 更新场景标题 (根据阶段)
+    if (state.phase === 'puppy') {
+      if (state.transformed === false) {
+        sceneTitle.textContent = '🏡 温暖的小家 · 小金毛';
+      }
+    } else {
+      sceneTitle.textContent = '🌟 他变成了人 · 恋爱开始';
+    }
+
+    // 更新立绘
+    renderCharacter();
+    // 更新按钮
+    renderButtons();
+    // 更新数值显示(每次动作都调用，但这里再保证一下)
+    updateStatsUI();
+
+    // 如果好感>=70 但未变身，可以给个提示 (但变身一般由action触发, 在action里checkTransformation已经变身)
+    // 但为了防止用户通过多个按钮顺序刚好达到条件却没有变身，在render里也检测？动作中已检测，但还需处理一种情况：重置后不会。
+    // 这里安全起见，在渲染时检测但不触发多次，使用标志。
+    // 但可能造成递归render? 使用checkTransformation但不递归。这里注释掉防止重复触发，改为在action中处理。
+    // 不过可以在render中检测并调用一次，但必须避免循环。
+    // 我们只在action中调用checkTransformation。因为每次属性变动都是通过action，没问题。
+  }
+
+  // --- 初始化以及重置时绑定事件 ---
+  resetBtn.addEventListener('click', resetGame);
+
+  // 为狗狗阶段好感/饥饿/清洁的自然变化？我们不使用自动衰减，保持玩家友好。
+
+  // 启动渲染
+  function initGame() {
+    resetGame(); // reset会调用render
+  }
+
+  // 附加: 当好感或者饱食清洁变动时, 在action里已经调用了renderScene, 但renderScene里没有检查变身。
+  // 但checkTransformation在action中调用了。完美。
+  // 然而某些action中checkTransformation在renderScene之前调用，会先变身，再render。
+
+  // 修改几个action，确保调用顺序。但目前已ok。
+
+  // 但要确保变身时，消息不被覆盖。transformToHuman中修改了messageBox，然后再renderScene, 渲染按钮等。
+  // 在renderScene中不会修改messageBox，所以没问题。
+
+  // 但注意: feed中调用了 checkTransformation, 如果触发变身，会执行 transformToHuman，之后又执行 renderScene，可能会覆盖按钮，没错。
+  // 但transformToHuman里面调用了 renderScene 一次！然后feed里继续执行renderScene，可能会重复渲染但无害。
+  // 优化：在transformToHuman内部避免重复渲染？但里面调用了renderScene。然后在feed等函数里还会调用，稍微冗余，但不会出错。
+  // 改进：在transformToHuman中移除renderScene调用，由调用方后续渲染。但为确保变身立绘立刻更新，保留也行。但如果重复调用，按钮事件会重新绑定，可能造成多个监听器？
+  // 由于每次renderButtons都清空innerHTML并重新绑定，不会累加。安全。
+  // 但是 checkTransformation 可能在 feed 中触发 transformToHuman，transformToHuman 里设置了isTransforming防止递归。
+  // 随后feed又调用renderScene。OK。
+
+  // 为了避免transformToHuman里的renderScene与后面重复，去掉transformToHuman里的renderScene调用？
+  // 但是若在其他地方单独触发（无后续render），会不更新。为了安全，保留。但要注意此时phase已经是human，在transform里renderButtons会渲染恋爱按钮，没问题。
+  // 而feed里后面再调用renderScene，还是human阶段，所以按钮正确。
+
+  // 另外在checkTransformation中会调用transformToHuman，transformToHuman里会调用renderScene, 但此时还在feed函数中，
+  // 可能导致在feed没有完全结束时就已经渲染了human。没问题。
+
+  // 开始游戏!
+  initGame();
+
+  // 额外：在页面加载完成时确保重置
+  window.addEventListener('load', () => {
+    resetGame();
+  });
+</script>
+</body>
+</html>
